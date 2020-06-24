@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+{% block title_block %}{{user.username}}'s profile {% endblock %}
+{% block body_block %}
+<h2>{{ user.username }}</h2>
+<img src="/media/{{user.user_profile.profile_pic}}">
+{% for blog in user.post_author.all %}
+<h3>{{ blog.blog_title }}</h3>
+<h6>{{ blog.publish_date }}</h6>
+<div class="row">
+  <div class="col-sm-4">
+    <img src="/media/{{blog.blog_image}}" width="100%">
+  </div>
+  <div class="col sm-8">
+    <p>{{ blog.blog_content|range_filter|linebreaks }}</p>
+  </div>
+  <a href="{% url 'App_Blog:blog_details' slug=blog.slug %}">Read more</a>
+</div>
+<a href="{% url 'App_Blog:edit_blog' pk=blog.pk %}">Edit</a> <br> <a href="{% url 'App_Blog:delete_blog' pk=blog.pk %}">Delete</a>
+{% endfor %}
+{% endblock %}
